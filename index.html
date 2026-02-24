@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pranav Kshirsagar | Portfolio</title>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+        /* --- RESET & GLOBAL --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #ffffff;
+            line-height: 1.6;
+            overflow-x: hidden;
+            background: #0f0f0f;
+        }
+
+        /* --- BACKGROUND --- */
+        .bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                        url('https://images.unsplash.com/photo-1635776062127-d379bfcba9f8?auto=format&fit=crop&q=80&w=2560');
+            background-size: cover;
+            background-position: center;
+            animation: backgroundAnimate 15s infinite alternate ease-in-out;
+        }
+
+        @keyframes backgroundAnimate {
+            0% { background-color: #0f0f0f; }   
+            33% { background-color: #0a1128; }  
+            66% { background-color: #1a0f1f; }  
+            100% { background-color: #0f1a1a; } 
+        }
+
+        /* --- NAVIGATION --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 10%;
+            background: rgba(15, 15, 15, 0.7);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo { font-size: 1.5rem; font-weight: bold; color: #00d4ff; }
+        nav ul { display: flex; list-style: none; }
+        nav ul li { margin-left: 30px; }
+        nav ul li a { text-decoration: none; color: #bbb; transition: 0.3s; cursor: pointer; }
+        nav ul li a:hover { color: #00d4ff; }
+
+        /* --- SECTION ANIMATIONS --- */
+        section {
+            padding: 100px 10%;
+            min-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            opacity: 0;
+            filter: blur(20px);
+            transform: scale(0.9) translateY(40px);
+            transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+            will-change: opacity, filter, transform;
+        }
+
+        section.is-visible {
+            opacity: 1;
+            filter: blur(0px);
+            transform: scale(1) translateY(0);
+        }
+
+        .home-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 50px;
+        }
+
+        /* --- PROFILE IMAGE & ANIMATIONS --- */
+        .img-box {
+            position: relative;
+            width: 380px;
+            height: 380px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            animation: float 5s ease-in-out infinite;
+        }
+
+        .img-box::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px dashed #00d4ff;
+            animation: rotateRing 15s linear infinite;
+            opacity: 0.6;
+        }
+
+        .img-box img {
+            width: 340px;
+            height: 340px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #00d4ff; 
+            transition: 0.5s ease;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+            z-index: 2;
+        }
+
+        .img-box:hover img {
+            transform: scale(1.05);
+            box-shadow: 0 0 40px rgba(0, 212, 255, 0.7);
+            border-color: #ffffff;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes rotateRing {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* --- TYPOGRAPHY & BUTTONS --- */
+        h1 { font-size: 3.5rem; margin-bottom: 10px; }
+        h1 span { color: #00d4ff; }
+        .typing-text { font-size: 1.8rem; font-weight: 300; color: #00d4ff; min-height: 40px; }
+        .cursor { display: inline-block; width: 3px; background-color: #00d4ff; margin-left: 5px; animation: blink 0.7s infinite; }
+        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
+
+        .section-title { text-align: center; margin-bottom: 40px; }
+        .about-text { max-width: 800px; margin: 0 auto; font-size: 1.1rem; color: #ccc; text-align: center; }
+
+        .btn {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 12px 35px;
+            background: #00d4ff;
+            color: #000;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn:hover { color: #fff; transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0, 212, 255, 0.3); }
+
+        .button {
+            background: none;
+            border: 2px solid #00d4ff;
+            color: white;
+            padding: 5px 15px;
+            cursor: pointer;
+            border-radius: 4px;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .block-btn { display: block; text-align: center; }
+
+        /* --- GRID & CARDS --- */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 40px; }
+
+        .card { 
+            background: rgba(255, 255, 255, 0.03); 
+            backdrop-filter: blur(5px);
+            padding: 25px; 
+            border-radius: 15px; 
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover { border-color: #00d4ff; transform: translateY(-10px); }
+
+        .card-img-container {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .card-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .card:hover .card-img-container img { transform: scale(1.1); }
+
+        /* --- FOOTER --- */
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 80px 10%;
+            text-align: center;
+            color: #555;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .home-content { flex-direction: column-reverse; text-align: center; }
+            .img-box { width: 280px; height: 280px; margin: 0 auto; }
+            .img-box img { width: 250px; height: 250px; }
+            h1 { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-overlay"></div>
+
+    <nav>
+        <div class="logo">PRANAVK.</div>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <section id="home">
+        <div class="home-content">
+            <div class="home-text">
+                <h1>Hi, I'm <span>Pranav</span></h1>
+                <div class="typing-text-container">
+                    <span class="typing-text"></span><span class="cursor">&nbsp;</span>
+                </div>
+                <p style="margin-top: 15px; color: #aaa;">Expert in building modern, interactive web applications.</p>
+                <a href="resume/resume.pdf" class="btn">My Resume</a>
+            </div>
+            <div class="home-image">
+                <div class="img-box">
+                    <img src="images/profile.png" alt="Pranav">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about">
+        <h1 class="section-title">About Me</h1>
+        <p class="about-text">
+          I am Pranav Kshirsagar, a passionate BSc IT student with a strong interest in technology, web development, and problem-solving. I am also passionate about Computer Hardware.</p>
+          <br>
+          <p class="about-text">My hobbies include Drawing sketches, reading novels, and playing cricket. I am a good listener and I like to learn new skills that help me grow.</p>
+    </section>
+
+    <section id="projects">
+        <h1 class="section-title">My Projects</h1>
+        <div class="grid">
+            <div class="card">
+                <div class="card-img-container">
+                    <img src="images/cprogramming.png" alt="C Programming">
+                </div>
+                <h3>C PROGRAMMING</h3>
+                <h4>Medical Equipment Management System</h4>
+                <p>Store the detail of medical equipment</p>
+                <br><br>
+                <a href="https://github.com/Pranav25042005/Medical_Equipment_Management_System" class="button">View</a>
+            </div>
+            
+            <div class="card">
+                <div class="card-img-container">
+                    <img src="images/oopscpp.png" alt="C++ OOP">
+                </div>
+                <h3>OOPS USING C++</h3>
+                <h4>Event Management System</h4>
+                <p>Store the detial of event like movies, drama and concert.</p>
+                <br><br>
+                <a href="https://github.com/Pranav25042005/Event_Management_System" class="button">View</a>
+            </div>
+        </div>
+    </section>
+    
+    <section id="contact">
+        <h1 class="section-title">Get In Touch</h1>
+        <div class="grid">
+            <div class="card">
+                <div class="card-img-container"><img src="images/gmail.png" alt="Email"></div>
+                <h3>Email</h3>
+                <p>I'm always open to discussing new projects.</p>
+                <a href="mailto:pranavkshirsagar2505@gmail.com" class="btn block-btn">Send Mail</a>
+            </div>
+            
+            <div class="card">
+                <div class="card-img-container"><img src="images/facebook.png" alt="Facebook"></div>
+                <h3>Facebook</h3>
+                <p>To join my journey do follow</p>
+                <a href="https://www.facebook.com/share/1DojwYpVaF/" class="btn block-btn">Follow Me</a>
+            </div>
+
+            <div class="card">
+                <div class="card-img-container"><img src="images/github.png" alt="GitHub"></div>
+                <h3>GitHub</h3>
+                <p>Check out my latest repositories.</p>
+                <a href="https://github.com/Pranav25042005" class="btn block-btn">View Codes</a>
+            </div>
+
+            <div class="card">
+                <div class="card-img-container"><img src="images/instagram.png" alt="Instagram"></div>
+                <h3>Instagram</h3>
+                <p>Follow my journey outside of coding.</p>
+                <a href="https://instagram.com/pranav_kshirsagar05" class="btn block-btn">Follow Me</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Pranav Kshirsagar</p>
+    </footer>
+
+    <script>
+        $(document).ready(function() {
+            // --- TYPING ANIMATION ---
+            const textArray = ["Web Developer", "Hardware Engineer", "Creative Thinker"];
+            let textIndex = 0, charIndex = 0;
+
+            function type() {
+                if (charIndex < textArray[textIndex].length) {
+                    $('.typing-text').append(textArray[textIndex].charAt(charIndex));
+                    charIndex++;
+                    setTimeout(type, 100);
+                } else {
+                    setTimeout(erase, 2000);
+                }
+            }
+
+            function erase() {
+                if (charIndex > 0) {
+                    let currentText = textArray[textIndex].substring(0, charIndex - 1);
+                    $('.typing-text').text(currentText);
+                    charIndex--;
+                    setTimeout(erase, 50);
+                } else {
+                    textIndex = (textIndex + 1) % textArray.length;
+                    setTimeout(type, 100);
+                }
+            }
+            
+            // Initialize typing
+            type();
+
+            // --- SMOOTH SCROLL ---
+            $('nav a').on('click', function(e) {
+                if (this.hash !== "") {
+                    e.preventDefault();
+                    let hash = this.hash;
+                    $('html, body').animate({
+                        scrollTop: $(hash).offset().top - 70
+                    }, 800);
+                }
+            });
+
+            // --- INTERSECTION OBSERVER (Fade in on scroll) ---
+            const observerOptions = { threshold: 0.15 };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        $(entry.target).addClass('is-visible');
+                    } else {
+                        $(entry.target).removeClass('is-visible');
+                    }
+                });
+            }, observerOptions);
+
+            $('section').each(function() {
+                observer.observe(this);
+            });
+        });
+    </script>
+</body>
+</html>
